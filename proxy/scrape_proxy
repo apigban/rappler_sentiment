@@ -1,9 +1,14 @@
 import requests
 from lxml import html
-import log.log as log
 
 
 def proxyScraper(htmlobject):
+    """
+    Parses htmlobject using xpath search pulling IP, port, Country, type, HTTPS and Time discovered
+    information for a single request
+    :param htmlobject:
+    :return: proxyDict
+    """
     proxyIP = [item for item in tree.xpath('//table/tbody/tr/td[1]/text()')]
     proxyPort = [item for item in tree.xpath('//table/tbody/tr/td[2]/text()')]
     proxyCountry = [item for item in tree.xpath('//table/tbody/tr/td[4]/text()')]
@@ -13,15 +18,11 @@ def proxyScraper(htmlobject):
 
     proxyDict = {key: value for key, *value in
                  zip(proxyCountry, proxyIP, proxyPort, proxyType, proxyHTTPS, proxyDiscovered)}
-    print(proxyDict)
-    proxyLog.info(f'Stats: {len(proxyDict)} identified.')
 
     return proxyDict
 
 
 if __name__ == '__main__':
-    proxyLog = log.get_logger(__name__)
-    proxyLog.info(f'Stats: identified.')
     uri = 'https://free-proxy-list.net/'
 
     headers = {
