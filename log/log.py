@@ -37,6 +37,4 @@ def get_logger(logger_name):
     logger.addHandler(get_file_handler())
     # with this pattern, it's rarely necessary to propagate the error up to parent
     logger.propagate = False
-
-
-return logger
+    return logger
