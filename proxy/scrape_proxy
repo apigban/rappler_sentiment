@@ -1,0 +1,22 @@
+import requests
+from lxml import html
+
+uri = 'https://free-proxy-list.net/'
+
+headers = {
+    'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Cafari/537.36'}
+
+pageContent = requests.get(url=uri, headers=headers, timeout=10)
+
+tree = html.fromstring(pageContent.content)
+
+# class proxy:
+proxyIP = [item for item in tree.xpath('//table/tbody/tr/td[1]/text()')]
+proxyPort = [item for item in tree.xpath('//table/tbody/tr/td[2]/text()')]
+proxyCountry = [item for item in tree.xpath('//table/tbody/tr/td[4]/text()')]
+proxyType = [item for item in tree.xpath('//table/tbody/tr/td[5]/text()')]
+proxyHTTPS = [item for item in tree.xpath('//table/tbody/tr/td[7]/text()')]
+proxyDiscovered = [item for item in tree.xpath('//table/tbody/tr/td[8]/text()')]
+
+# y_dict_3 = dict(zip(list1, zip(list2, list3)))
+proxy_dict = dict(zip(proxyIP, zip(proxyPort, proxyCountry, proxyType, proxyHTTPS, proxyDiscovered)))
