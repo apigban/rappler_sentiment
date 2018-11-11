@@ -1,0 +1,10 @@
+2018-11-11 13:59:03,050,50 INFO     [db_func.py:39] Commit Done. Link: asdasd
+2018-11-11 14:01:24,510,510 INFO     [db_func.py:39] Commit Done. Link: asdasd
+2018-11-11 14:05:38,328,328 INFO     [db_func.py:29] Commit Done. Link: asdasd
+2018-11-11 14:17:16,952,952 WARNING  [db_func.py:50] DUPLICATE Link found. No Commit Done. LINK: asdasd
+2018-11-11 14:17:16,953,953 INFO     [db_func.py:59] Session Closed
+2018-11-11 14:17:34,298,298 INFO     [db_func.py:53] NEW LINK: asdasd1 Committing draw object to DB...
+2018-11-11 14:17:34,312,312 INFO     [db_func.py:56] Commit Done.
+2018-11-11 14:17:34,312,312 INFO     [db_func.py:59] Session Closed
+2018-11-11 14:22:15,452,452 WARNING  [db_func.py:58] DUPLICATE Link found. No Commit Done. LINK: asdasd1
+2018-11-11 14:22:15,452,452 INFO     [db_func.py:67] Session Closed
