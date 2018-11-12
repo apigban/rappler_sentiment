@@ -5,14 +5,19 @@ import random
 
 proxyLogger = log.get_logger(__name__)
 
-def proxyScraper(htmlobject):
+
+def proxyScraper():
     """
     Parses htmlobject using xpath search pulling IP, port, Country, type, HTTPS and Time discovered
     information for a single request
     :param htmlobject:
     :return: proxyDict
     """
-    tree = htmlobject
+    uri = 'https://free-proxy-list.net/'
+
+    pageContent = requests.get(url=uri, headers=rand_useragent(), timeout=10)
+
+    tree = html.fromstring(pageContent.content)
 
     proxyIP = [item for item in tree.xpath('//table/tbody/tr/td[1]/text()')]
     proxyPort = [item for item in tree.xpath('//table/tbody/tr/td[2]/text()')]
@@ -53,10 +58,4 @@ def rand_useragent():
     return html_headers
 
 if __name__ == '__main__':
-    uri = 'https://free-proxy-list.net/'
-
-    pageContent = requests.get(url=uri, headers=rand_useragent(), timeout=10)
-
-    tree = html.fromstring(pageContent.content)
-
-    proxyScraper(tree)
+    proxyScraper()
