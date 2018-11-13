@@ -13,6 +13,7 @@ proxyLogger = log.get_logger(__name__)
 httpsCount = 0
 httpCount = 0
 
+
 def proxyScraper():
     """
     Parses htmlobject using xpath search pulling IP, port, Country, type, HTTPS and Time discovered
@@ -52,6 +53,11 @@ def proxyScraper():
 
 
 def rand_useragent():
+    """
+    Picks a random user-agent when function is called
+    Returns a dictionary containing the user-agent
+    :return: html_headers
+    """
     useragent = [
         'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/600.8.9 (KHTML, like Gecko) Version/8.0.8 Safari/600.8.9',
         'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.101 Safari/537.36',
@@ -66,10 +72,21 @@ def rand_useragent():
 
 
 def proxyCheck(proxyURI):
-    test_site = "http://api.ipify.org/?format=json"
+    """
+    Acts on a URI (proxyURI) passed by the multiprocessor function
+    proxyURI is checked using regex if it uses the https:// protocol
+    A proxyURI that passes the regex check is sent a request with https parameters
+    A proxyURI that fails the regex check is sent a request with http parameters
+    The proxyURI is then used to send a request to test_site
+    A 200 response places the proxyURI to a proxyList(https/http list)
+    :param proxyURI:
+    :return: httpsProxy, httpProxy
+    """
 
     httpsProxy = []
     httpProxy = []
+
+    test_site = "http://api.ipify.org/?format=json"
 
     pattern = r'(https)://'
 
@@ -84,7 +101,7 @@ def proxyCheck(proxyURI):
             status = r.status_code
             if status is 200:
                 httpsProxy.append(proxyURI)
-                proxyLogger.info(f'Proxy {proxyURI} is Online. Appending to active proxy list.')
+                proxyLogger.info(f'Proxy {proxyURI} is Online. Appending to active HTTPS proxy list.')
                 counter('https')
         except Exception as error:
             proxyLogger.error(f'Error on proxy {proxyURI}. Exception: {error} Stack Trace: {traceback.print_exc()}')
@@ -100,7 +117,7 @@ def proxyCheck(proxyURI):
             status = r.status_code
             if status is 200:
                 httpProxy.append(proxyURI)
-                proxyLogger.info(f'Proxy {proxyURI} is Online. Appending to active proxy list.')
+                proxyLogger.info(f'Proxy {proxyURI} is Online. Appending to active HTTP proxy list.')
                 counter('http')
         except Exception as error:
             proxyLogger.error(f'Error on proxy {proxyURI}. Exception: {error} Stack Trace: {traceback.print_exc()}')
@@ -118,18 +135,35 @@ def counter(protocol_type):
         httpCount += 1
 
 
-def multiprocessor(proxyList):
+def multithreader(proxyList):
+    httpsProxy = []
+    httpProxy = []
+
     with TPE(max_workers=50) as executor:
         futures = [executor.submit(proxyCheck, uri) for uri in proxyList]
         for future in as_completed(futures):
-            proxyLogger.debug(f'Thread Closed for ProxyCheck {future.result()}')
+            output = future.result()
+            if len(output[0]) == 1:
+                httpsProxy.append(output[0].pop(0))
+            elif len(output[1]) == 1:
+                httpProxy.append(output[1].pop(0))
+            # proxyLogger.debug(f'Thread Closed for ProxyCheck {output}')
 
     proxyLogger.info(
         f'{httpsCount + httpCount} active proxies, {httpsCount} are HTTPS capable and {httpCount} for HTTP')
 
+    return httpsProxy, httpProxy
 
-if __name__ == '__main__':
+
+def main():
     httpsProxyList, httpProxyList = proxyScraper()
 
-    multiprocessor(httpsProxyList[1:])
-    multiprocessor(httpProxyList[1:])
+    httpsProxies, _ = multithreader(httpsProxyList[1:])
+    _, httpProxies = multithreader(httpProxyList[1:])
+
+    proxyLogger.info(f'\nHTTPS\n{httpsProxies}\n\nHTTP\n{httpProxies}')
+
+    return httpsProxies, httpProxies
+
+if __name__ == '__main__':
+    main()
