@@ -37,35 +37,6 @@ def recentRecords(TableName):
     return records
 
 
-def db_rappler_commit(link):
-    """
-     search db table for dynamic column, return max 1000
-     'recentResult' is a list
-     if no table is present from db, return an empty list
-     ###SQL QUERY:
-     SELECT composite FROM table
-     ORDER BY id DESC
-     """
-    newLink = RapplerLinks(link)
-
-    recentDBRecords = recentRecords(RapplerLinks)
-
-    if newLink.links in recentDBRecords:
-        dbLogger.warn(
-            f'DUPLICATE Link found. No Commit Done. LINK: {link}')
-    else:
-        dbLogger.info(
-            f'NEW LINK: {link} Committing draw object to DB...')
-        session.add(newLink)
-        session.commit()
-        dbLogger.info(f'Commit Done.')
-        session.close()
-
-    dbLogger.info(f'Session Closed')
-
-    return link
-
-
 def db_commit(table, content):
     """
          search db table for dynamic column, return max 1000
