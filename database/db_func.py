@@ -5,7 +5,7 @@ from datetime import datetime as dt
 from sqlalchemy.orm import sessionmaker
 import log.log as log
 
-from database.db_base import Base, Links, engine
+from database.db_base import Base, engine, URLs, RapplerURLs
 
 dbLogger = log.get_logger(__name__)
 
@@ -28,7 +28,7 @@ def recentRecords(TableName):
 
     records = []
 
-    dbRecords = session.query(Links).order_by(Links.id.desc()).limit(1000).all()
+    dbRecords = session.query(TableName).order_by(TableName.id.desc()).limit(1000).all()
     #    dbRecords = session.query(f'{TableName}').order_by(f'{TableName}'.id.desc()).limit(1000).all()
 
     for item in dbRecords:
@@ -37,7 +37,7 @@ def recentRecords(TableName):
     return records
 
 
-def dbCommit(link):
+def db_rappler_commit(link):
     """
      search db table for dynamic column, return max 1000
      'recentResult' is a list
@@ -46,9 +46,9 @@ def dbCommit(link):
      SELECT composite FROM table
      ORDER BY id DESC
      """
-    newLink = Links(link)
+    newLink = RapplerLinks(link)
 
-    recentDBRecords = recentRecords(Links)
+    recentDBRecords = recentRecords(RapplerLinks)
 
     if newLink.links in recentDBRecords:
         dbLogger.warn(
@@ -66,4 +66,22 @@ def dbCommit(link):
     return link
 
 
-dbCommit('asdasd1')
+def db_commit(table, content):
+    """
+         search db table for dynamic column, return max 1000
+         'recentResult' is a list
+         if no table is present from db, return an empty list
+         ###SQL QUERY:
+         SELECT composite FROM table
+         ORDER BY id DESC
+         """
+
+    object_to_commit = table(content)
+
+    session.add(object_to_commit)
+    session.commit()
+    dbLogger.info(f'Commit Done.')
+    session.close()
+    dbLogger.info(f'Session Closed')
+
+    return link
