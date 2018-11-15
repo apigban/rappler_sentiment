@@ -4,6 +4,7 @@ import log.log as log
 import random
 import traceback
 import re
+import os
 
 from concurrent.futures import ThreadPoolExecutor as TPE
 from concurrent.futures import as_completed
@@ -113,7 +114,7 @@ def proxyCheck(proxyURI):
 
         # Test HTTP proxy if active
         try:
-            r = requests.get(test_site, headers=rand_useragent(), proxies=param_proxy, timeout=(20, 15))
+            r = requests.get(test_site, headers=rand_useragent(), proxies=param_proxy, timeout=(60, 45))
             status = r.status_code
             if status is 200:
                 httpProxy.append(proxyURI)
@@ -135,6 +136,21 @@ def counter(protocol_type):
         httpCount += 1
 
 
+def file_write(line):
+    """
+    Appends line of type str to  file
+    list is first converted to a string
+    line is stripped of 1st and last characters "[" and "]"
+    """
+
+    target_dir = os.path.abspath(os.path.join(__file__, '../../rappler_spider/proxy'))
+
+    with open(f'{target_dir}/proxies.txt', 'a') as write_file:
+        write_file.write(line)
+        write_file.write('\n')
+
+
+
 def multithreader(proxyList):
     httpsProxy = []
     httpProxy = []
@@ -147,10 +163,15 @@ def multithreader(proxyList):
                 httpsProxy.append(output[0].pop(0))
             elif len(output[1]) == 1:
                 httpProxy.append(output[1].pop(0))
-            # proxyLogger.debug(f'Thread Closed for ProxyCheck {output}')
 
     proxyLogger.info(
         f'{httpsCount + httpCount} active proxies, {httpsCount} are HTTPS capable and {httpCount} for HTTP')
+
+    combinedProxies = httpsProxy + httpProxy
+
+    for item in combinedProxies:
+        file_write(item)
+
 
     return httpsProxy, httpProxy
 
