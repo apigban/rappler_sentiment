@@ -28,6 +28,7 @@ class URLs(DeclarativeBase):
     url = Column('url', Text, unique=True)
     text = Column('text', Text, default='')
     source = Column('source', Text, default='')
+    ismedia = Column('ismedia', String(6), default='false')
     fragment = Column('fragment', Text, default='')  # no idea what fragment is
     nofollow = Column('nofollow', Text, default='')
     status = Column('status', String(10), default='unscraped')  # scraped, unscraped, unsuccessful
