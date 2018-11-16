@@ -11,8 +11,19 @@ from sqlalchemy.orm import sessionmaker
 
 from .models import URLs, db_connect, create_table
 
+from .proxy import scrapeProxy
+
 import re
 from tldextract import tldextract
+
+
+class RunProxyScraperPipeline(object):
+    """
+    Runs proxyScraper.py to generate a fresh batch of proxy IPs
+    """
+
+    def start_proxy_generation(self):
+        scrapeProxy.main()
 
 
 class StripWhitespacePipeline(object):

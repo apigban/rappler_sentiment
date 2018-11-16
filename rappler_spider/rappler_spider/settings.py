@@ -51,9 +51,10 @@ ROBOTSTXT_OBEY = True
 
 # Enable or disable downloader middlewares
 # See https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
-# DOWNLOADER_MIDDLEWARES = {
-#    'rappler_spider.middlewares.RapplerSpiderDownloaderMiddleware': 543,
-# }
+DOWNLOADER_MIDDLEWARES = {
+    'rotating_proxies.middlewares.RotatingProxyMiddleware': 610,
+    'rotating_proxies.middlewares.BanDetectionMiddleware': 620,
+}
 
 # Enable or disable extensions
 # See https://doc.scrapy.org/en/latest/topics/extensions.html
@@ -64,6 +65,7 @@ ROBOTSTXT_OBEY = True
 # Configure item pipelines
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
+    'rappler_spider.pipelines.RunProxyScraperPipeline': 200,
     'rappler_spider.pipelines.CheckMediaPipeline': 299,
     'rappler_spider.pipelines.GetDomainPipeline': 298,
     'rappler_spider.pipelines.URLCleanerPipeline': 297,
@@ -90,3 +92,5 @@ ITEM_PIPELINES = {
 # HTTPCACHE_DIR = 'httpcache'
 # HTTPCACHE_IGNORE_HTTP_CODES = []
 # HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
+
+ROTATING_PROXY_LIST_PATH = '/home/apigban/PycharmProjects/rappler_sentiment/rappler_spider/rappler_spider/proxy/proxies.txt'

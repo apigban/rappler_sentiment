@@ -143,12 +143,11 @@ def file_write(line):
     line is stripped of 1st and last characters "[" and "]"
     """
 
-    target_dir = os.path.abspath(os.path.join(__file__, '../../rappler_spider/proxy'))
+    target_dir = os.path.abspath(os.path.join(__file__, '../../proxy'))
 
     with open(f'{target_dir}/proxies.txt', 'a') as write_file:
         write_file.write(line)
         write_file.write('\n')
-
 
 
 def multithreader(proxyList):
