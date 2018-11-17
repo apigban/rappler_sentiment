@@ -18,7 +18,7 @@ NEWSPIDER_MODULE = 'rappler_spider.spiders'
 USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:39.0) Gecko/20100101 Firefox/39.0'
 
 # Obey robots.txt rules
-ROBOTSTXT_OBEY = True
+ROBOTSTXT_OBEY = False
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 # CONCURRENT_REQUESTS = 32
@@ -65,7 +65,8 @@ DOWNLOADER_MIDDLEWARES = {
 # Configure item pipelines
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-    # 'rappler_spider.pipelines.RunProxyScraperPipeline': 298, fixme - proxyScraper.py needs to automatically run after scrapy crawl <spider> command
+    'rappler_spider.pipelines.RunProxyScraperPipeline': 298,
+    #fixme - proxyScraper.py needs to automatically run after scrapy crawl <spider> command
     'rappler_spider.pipelines.CheckMediaPipeline': 299,
     'rappler_spider.pipelines.GetDomainPipeline': 298,
     'rappler_spider.pipelines.URLCleanerPipeline': 297,
