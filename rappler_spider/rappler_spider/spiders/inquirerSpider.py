@@ -8,7 +8,7 @@ from datetime import datetime
 
 class InquirerSpider(CrawlSpider):
     name = 'inquirerSpider'
-    allowed_domains = ['inquirer.com']
+    allowed_domains = ['inquirer.net']
     start_urls = ['https://www.inquirer.net']
 
     rules = (Rule(LinkExtractor(), callback='parse_url', follow=False),)
@@ -26,7 +26,8 @@ class InquirerSpider(CrawlSpider):
             item['text'] = link.text
             item['fragment'] = link.fragment
             item['nofollow'] = link.nofollow
-            item['source'] = link.url
+            item['source_domain'] = self.allowed_domains[0]
+            item['url_domain'] = link.url
             item['ismedia'] = 'no'
             item['status'] = 'unscraped'
             item['scrape_date'] = datetime.utcnow()
