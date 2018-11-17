@@ -5,10 +5,11 @@ from ..items import URLItem
 
 from datetime import datetime
 
-class RapplerSpider(CrawlSpider):
-    name = 'rapplerSpider'
-    allowed_domains = ['rappler.com']
-    start_urls = ['https://www.rappler.com']
+
+class InquirerSpider(CrawlSpider):
+    name = 'inquirerSpider'
+    allowed_domains = ['inquirer.com']
+    start_urls = ['https://www.inquirer.net']
 
     rules = (Rule(LinkExtractor(), callback='parse_url', follow=False),)
 
