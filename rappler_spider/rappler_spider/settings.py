@@ -15,7 +15,7 @@ SPIDER_MODULES = ['rappler_spider.spiders']
 NEWSPIDER_MODULE = 'rappler_spider.spiders'
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
-# USER_AGENT = 'rappler_spider (+http://www.yourdomain.com)'
+USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:39.0) Gecko/20100101 Firefox/39.0'
 
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = True
@@ -52,8 +52,8 @@ ROBOTSTXT_OBEY = True
 # Enable or disable downloader middlewares
 # See https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
 DOWNLOADER_MIDDLEWARES = {
-    'rotating_proxies.middlewares.RotatingProxyMiddleware': 610,
-    'rotating_proxies.middlewares.BanDetectionMiddleware': 620,
+    'rotating_proxies.middlewares.RotatingProxyMiddleware': 110,
+    'rotating_proxies.middlewares.BanDetectionMiddleware': 120,
 }
 
 # Enable or disable extensions
@@ -65,7 +65,7 @@ DOWNLOADER_MIDDLEWARES = {
 # Configure item pipelines
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-    'rappler_spider.pipelines.RunProxyScraperPipeline': 200,
+    # 'rappler_spider.pipelines.RunProxyScraperPipeline': 298, fixme - proxyScraper.py needs to automatically run after scrapy crawl <spider> command
     'rappler_spider.pipelines.CheckMediaPipeline': 299,
     'rappler_spider.pipelines.GetDomainPipeline': 298,
     'rappler_spider.pipelines.URLCleanerPipeline': 297,
@@ -94,3 +94,4 @@ ITEM_PIPELINES = {
 # HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
 
 ROTATING_PROXY_LIST_PATH = '/home/apigban/PycharmProjects/rappler_sentiment/rappler_spider/rappler_spider/proxy/proxies.txt'
+ROTATING_PROXY_BAN_POLICY = 'rappler_spider.policy.MyPolicy'

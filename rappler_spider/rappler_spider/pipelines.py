@@ -22,7 +22,7 @@ class RunProxyScraperPipeline(object):
     Runs proxyScraper.py to generate a fresh batch of proxy IPs
     """
 
-    def start_proxy_generation(self):
+    def start_proxy_generation(self, spider):
         scrapeProxy.main()
 
 

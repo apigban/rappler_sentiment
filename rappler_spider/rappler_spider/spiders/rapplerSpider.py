@@ -7,8 +7,8 @@ from datetime import datetime
 
 class RapplerSpider(CrawlSpider):
     name = 'rapplerSpider'
-    allowed_domains = ['apigban.com']
-    start_urls = ['http://resume.apigban.com']
+    allowed_domains = ['rappler.com']
+    start_urls = ['https://www.rappler.com']
 
     rules = (Rule(LinkExtractor(), callback='parse_url', follow=False),)
 
