@@ -15,8 +15,9 @@ class URLItem(scrapy.Item):
     text = scrapy.Field()
     fragment = scrapy.Field()
     status = scrapy.Field()
-    source = scrapy.Field()
+    source_domain = scrapy.Field()
     ismedia = scrapy.Field()
     scrape_date = scrapy.Field()
     nofollow = scrapy.Field()
+    url_domain = scrapy.Field()
     pass
