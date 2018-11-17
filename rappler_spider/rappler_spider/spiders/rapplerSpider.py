@@ -5,10 +5,6 @@ from ..items import RapplerSpiderItem
 
 from datetime import datetime
 
-
-# from database.db_func import db_commit
-
-
 class RapplerSpider(CrawlSpider):
     name = 'rapplerSpider'
     allowed_domains = ['apigban.com']
@@ -17,6 +13,12 @@ class RapplerSpider(CrawlSpider):
     rules = (Rule(LinkExtractor(), callback='parse_url', follow=False),)
 
     def parse_url(self, response):
+        """
+        Extracts all URLs from variable start_urls
+        Populates item class with scrapy.link.Link object attrs
+        yields item to pipelines.py per item
+        :param response:
+        """
         for link in LinkExtractor().extract_links(response):
             item = RapplerSpiderItem()
             item['url'] = link.url
@@ -27,7 +29,4 @@ class RapplerSpider(CrawlSpider):
             item['ismedia'] = 'no'
             item['status'] = 'unscraped'
             item['scrape_date'] = datetime.utcnow()
-            print(item['url'])
-
-            #            print(f'LINK: {item}')
             yield item
