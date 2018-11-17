@@ -27,7 +27,8 @@ class URLs(DeclarativeBase):
     id = Column(Integer, Sequence('url_id_seq'), primary_key=True)
     url = Column('url', Text, unique=True)
     text = Column('text', Text, default='')
-    source = Column('source', Text, default='')
+    source_domain = Column('source_domain', Text, default='')
+    url_domain = Column('url_domain', Text, default='')
     ismedia = Column('ismedia', String(6), default='false')
     fragment = Column('fragment', Text, default='')  # no idea what fragment is
     nofollow = Column('nofollow', Text, default='')
