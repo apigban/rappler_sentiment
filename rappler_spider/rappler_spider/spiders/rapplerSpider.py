@@ -7,8 +7,8 @@ from datetime import datetime
 
 class RapplerSpider(CrawlSpider):
     name = 'rapplerSpider'
-    allowed_domains = ['rappler.com']
-    start_urls = ['https://www.rappler.com']
+    allowed_domains = ['apigban.com']
+    start_urls = ['http://resume.apigban.com']
 
     rules = (Rule(LinkExtractor(), callback='parse_url', follow=False),)
 
@@ -25,7 +25,8 @@ class RapplerSpider(CrawlSpider):
             item['text'] = link.text
             item['fragment'] = link.fragment
             item['nofollow'] = link.nofollow
-            item['source'] = link.url
+            item['source_domain'] = self.allowed_domains[0]
+            item['url_domain'] = link.url
             item['ismedia'] = 'no'
             item['status'] = 'unscraped'
             item['scrape_date'] = datetime.utcnow()
