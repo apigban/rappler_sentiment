@@ -72,7 +72,8 @@ class GetDomainPipeline(object):
         extractDomain = tldextract.extract(item['url']).domain
         extractSuffix = tldextract.extract(item['url']).suffix
 
-        item['source'] = f'{extractDomain}.{extractSuffix}'
+        # item['source_domain'] = f'{extractDomain}.{extractSuffix}'
+        item['url_domain'] = f'{extractDomain}.{extractSuffix}'
         return item
 
 
@@ -116,7 +117,8 @@ class DBCommitPipeline(object):
         record.text = item['text']
         record.fragment = item['fragment']
         record.nofollow = item['nofollow']
-        record.source = item['source']
+        record.source_domain = item['source_domain']
+        record.url_domain = item['url_domain']
         record.ismedia = item['ismedia']
         record.status = item['status']
         record.scrape_date = item['scrape_date']
