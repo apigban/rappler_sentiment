@@ -1,5 +1,5 @@
 # NewsScraper
-This is a scraper for Philippine News websites.
+This is a spider for Philippine News websites.
 
 ## Getting Started
 
